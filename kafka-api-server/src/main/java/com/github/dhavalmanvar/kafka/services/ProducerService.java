@@ -1,6 +1,9 @@
 package com.github.dhavalmanvar.kafka.services;
 
+import com.github.dhavalmanvar.kafka.dto.MessageDTO;
 import com.github.dhavalmanvar.kafka.dto.ProducerDTO;
+import com.github.dhavalmanvar.kafka.utils.KafkaProducerUtil;
+import org.apache.kafka.common.protocol.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,10 @@ public class ProducerService {
     public ProducerService(ConfigManager configManager) {
         producers = new HashMap<>();
         this.configManager = configManager;
+    }
+
+    public void produceMessage(final MessageDTO messageDTO) {
+        KafkaProducerUtil.produceMessage(messageDTO, configManager.getBootstrapServers(), "common");
     }
 
     public void updateProducer(ProducerDTO producerDTO) {

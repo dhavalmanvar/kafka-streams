@@ -26,7 +26,7 @@ public class KafkaConsumerUtil {
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
         Consumer<String, Long> consumer = new KafkaConsumer<>(config);
-        consumer.subscribe(Collections.singletonList("word-count-output"));
+        consumer.subscribe(Collections.singletonList("favourite-color-target"));
 
         Runtime.getRuntime().addShutdownHook(new Thread(consumer::close));
 

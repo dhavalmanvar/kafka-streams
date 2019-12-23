@@ -34,4 +34,9 @@ public class TopicController {
         topicManager.deleteTopic(topic);
     }
 
+    @DeleteMapping()
+    public void deleteAllTopics() throws Exception {
+        topicManager.deleteAllTopic();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.github.dhavalmanvar.kafka.controllers;
 
+import com.github.dhavalmanvar.kafka.dto.MessageDTO;
 import com.github.dhavalmanvar.kafka.dto.ProducerDTO;
 import com.github.dhavalmanvar.kafka.services.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ public class ProducerController {
     @DeleteMapping(value = "/{id}")
     public void deleteProducer(@PathVariable String id) {
         this.producerService.deleteProducer(id);
+    }
+
+    @PostMapping(value="/message", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateProducer(@RequestBody MessageDTO messageDTO) {
+        this.producerService.produceMessage(messageDTO);
     }
 
 }

@@ -2,10 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>kafka-streaming-app</artifactId>
+        <groupId>com.github.manvardhaval.kafka.streams</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.dhavalmanvar.kafka.streams</groupId>
-    <artifactId>simple-word-count</artifactId>
-    <version>1.0-SNAPSHOT</version>
+
+    <artifactId>favourite-color</artifactId>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams -->
@@ -44,6 +48,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

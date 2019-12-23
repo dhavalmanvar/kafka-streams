@@ -10,6 +10,8 @@ public class TopicInfo implements Serializable {
 
     private Integer partitions;
 
+    private Boolean logCompact;
+
     public String getTopic() {
         return topic;
     }
@@ -32,5 +34,15 @@ public class TopicInfo implements Serializable {
 
     public void setPartitions(Integer partitions) {
         this.partitions = partitions;
+    }
+
+    public Boolean getLogCompact() {
+        if(logCompact == null)
+            return false;
+        return logCompact;
+    }
+
+    public void setLogCompact(Boolean logCompact) {
+        this.logCompact = logCompact;
     }
 }
