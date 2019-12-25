@@ -1,5 +1,8 @@
 package com.github.dhavalmanvar.kafka.dto;
 
+import com.github.dhavalmanvar.kafka.DataType;
+
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 
 public class MessageDTO implements Serializable {
@@ -8,9 +11,9 @@ public class MessageDTO implements Serializable {
 
     private Integer partition;
 
-    private String keyType;
+    private DataType keyType;
 
-    private String valueType;
+    private DataType valueType;
 
     private Object key;
 
@@ -32,19 +35,19 @@ public class MessageDTO implements Serializable {
         this.partition = partition;
     }
 
-    public String getKeyType() {
+    public DataType getKeyType() {
         return keyType;
     }
 
-    public void setKeyType(String keyType) {
+    public void setKeyType(DataType keyType) {
         this.keyType = keyType;
     }
 
-    public String getValueType() {
+    public DataType getValueType() {
         return valueType;
     }
 
-    public void setValueType(String valueType) {
+    public void setValueType(DataType valueType) {
         this.valueType = valueType;
     }
 

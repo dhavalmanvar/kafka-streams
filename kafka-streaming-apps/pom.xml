@@ -11,6 +11,7 @@
     <modules>
         <module>favourite-color</module>
         <module>word-count-app</module>
+        <module>bank-transanction-app</module>
     </modules>
 
 

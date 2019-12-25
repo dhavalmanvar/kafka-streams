@@ -1,13 +1,12 @@
 package com.github.dhavalmanvar.kafka.utils;
 
+import com.github.dhavalmanvar.kafka.DataType;
 import com.github.dhavalmanvar.kafka.dto.MessageDTO;
+import com.github.dhavalmanvar.kafka.serializer.KafkaCustomSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.FloatSerializer;
-import org.apache.kafka.common.serialization.IntegerSerializer;
-import org.apache.kafka.common.serialization.LongSerializer;
-import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.serialization.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,15 +68,37 @@ public class KafkaProducerUtil {
     public static KafkaProducer buildKafkaProducer(final MessageDTO message,
                                                    final String bootstrapServers,
                                                    final String producerId) {
+        return buildKafkaProducer(message.getKeyType(), message.getValueType(),
+                bootstrapServers, producerId);
+    }
+
+    public static KafkaProducer buildKafkaProducer(final DataType keyType,
+                                                   final DataType valueType,
+                                                   final String bootstrapServers,
+                                                   final String producerId) {
         Properties config = new Properties();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.CLIENT_ID_CONFIG, producerId);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                getSerializerClassName(message.getKeyType()));
+                getSerializerClassName(keyType));
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                getSerializerClassName(message.getValueType()));
+                getSerializerClassName(valueType));
 
         return new KafkaProducer(config);
+    }
+
+    public static KafkaProducer buildKafkaProducer(final Serializer keySerializer,
+                                                   final Serializer valueSerializer,
+                                                   final String bootstrapServers,
+                                                   final String producerId) {
+        Properties config = new Properties();
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        config.put(ProducerConfig.CLIENT_ID_CONFIG, producerId);
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.RETRIES_CONFIG, "3");
+        config.put(ProducerConfig.LINGER_MS_CONFIG, "1");
+        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+        return new KafkaProducer(config, keySerializer, valueSerializer);
     }
 
     public static ProducerRecord getProducerRecord(final MessageDTO message) {
@@ -93,19 +114,21 @@ public class KafkaProducerUtil {
         return record;
     }
 
-    public static String getSerializerClassName(String type) {
-        if(type == null || type.trim().isEmpty()) {
-            type = "string";
+    public static String getSerializerClassName(DataType type) {
+        if(type == null) {
+            type = DataType.STRING;
         }
 
-        if("string".equalsIgnoreCase(type)) {
+        if(DataType.STRING.equals(type)) {
             return StringSerializer.class.getName();
-        } else if("int".equalsIgnoreCase(type)) {
+        } else if(DataType.INT.equals(type)) {
             return IntegerSerializer.class.getName();
-        } else if("long".equalsIgnoreCase(type)) {
+        } else if(DataType.LONG.equals(type)) {
             return LongSerializer.class.getName();
-        } else if("float".equalsIgnoreCase(type)) {
+        } else if(DataType.FLOAT.equals(type)) {
             return FloatSerializer.class.getName();
+        } else if(DataType.custom.equals(type)) {
+            return KafkaCustomSerializer.class.getName();
         }
 
         throw new RuntimeException("Type " + type + " is not supported.");
